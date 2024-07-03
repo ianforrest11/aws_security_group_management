@@ -1,7 +1,6 @@
 # security group module to open eks cluster to 
 module "sg_rule_allow_http_from_lb_to_eks" {
   source = "git@github.com:ianforrest11/terraform_templates.git//aws/security_group_security_group_rule?ref=main"
-
   type                     = var.allow_http_from_lb_to_prod_eks_rule_type
   from_port                = var.allow_http_from_lb_to_prod_eks_http_from_port
   to_port                  = var.allow_http_from_lb_to_prod_eks_http_to_port

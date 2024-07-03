@@ -60,3 +60,21 @@ jobs:
           
           # Apply Terraform changes (auto-approve for automation)
           terraform apply -auto-approve -var-file=../variables/prod.tfvars
+
+      # Execute Terraform security_group_rule_management commands
+      - name: Execute Terraform security_group_rule_management
+        run: |
+          cd security_group_rule_management/terraform
+          echo "Entering directory security_group_rule_management/terraform"
+          
+          # Initialize Terraform
+          terraform init
+
+          # Validate Terraform configuration
+          terraform validate
+
+          # Plan Terraform changes
+          terraform plan -var-file=../variables/prod.tfvars
+          
+          # Apply Terraform changes (auto-approve for automation)
+          terraform apply -auto-approve -var-file=../variables/prod.tfvars

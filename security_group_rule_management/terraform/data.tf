@@ -1,7 +1,7 @@
-data "aws_security_group" "prod-lb-security-group" {
+data "aws_security_group" "prod_lb_security_group" {
   filter {
-    name   = "tag:Name"
-    values = ["prod-lb-security-group"]
+    name   = "group-name"
+    values = ["prod_lb_security_group"]
   }
 
   filter {
@@ -10,10 +10,10 @@ data "aws_security_group" "prod-lb-security-group" {
   }
 }
 
-data "aws_security_group" "prod-eks-security-group" {
+data "aws_security_group" "prod_eks_security_group" {
   filter {
-    name   = "tag:Name"
-    values = ["prod-eks-security-group"]
+    name   = "group-name"
+    values = ["prod_eks_security_group"]
   }
 
   filter {
