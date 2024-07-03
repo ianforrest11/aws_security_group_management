@@ -1,4 +1,4 @@
-### EKS Security Group Variabels ###
+### EKS Security Group Variables ###
 eks_egress_rules = [
   {
     from_port        = 0
@@ -9,9 +9,10 @@ eks_egress_rules = [
     prefix_list_ids  = []
     security_groups  = []
     self             = false
+    description      = "Allow all outbound traffic"
   }
 ]
-# Allow HTTP and HTTPS traffic from anywhere, and all traffic within the VPC
+
 eks_ingress_rules = [
   # Allow all traffic within the VPC
   {
@@ -23,16 +24,18 @@ eks_ingress_rules = [
     prefix_list_ids  = []
     security_groups  = []
     self             = false
+    description      = "Allow all inbound traffic within the VPC"
   }
 ]
+
 eks_sg_name       = "prod_eks_security_group"
-eks_sg_description = "security group for eks production cluster"
+eks_sg_description = "Security group for EKS production cluster"
 eks_tags = {
   Environment = "production"
   Project     = "portfolio_project"
 }
 
-### LB Security Group Variabels ###
+### LB Security Group Variables ###
 lb_egress_rules = [
   {
     from_port        = 0
@@ -43,33 +46,37 @@ lb_egress_rules = [
     prefix_list_ids  = []
     security_groups  = []
     self             = false
+    description      = "Allow all outbound traffic"
   }
 ]
-# Allow HTTP and HTTPS traffic from anywhere, and all traffic within the VPC
+
 lb_ingress_rules = [
-    {
-      from_port        = 80
-      to_port          = 80
-      protocol         = "tcp"
-      cidr_blocks      = ["0.0.0.0/0"]  # Allow HTTP traffic from anywhere
-      ipv6_cidr_blocks = []
-      prefix_list_ids  = []
-      security_groups  = []
-      self             = false
-    },
-    {
-      from_port        = 443
-      to_port          = 443
-      protocol         = "tcp"
-      cidr_blocks      = ["0.0.0.0/0"]  # Allow HTTPS traffic from anywhere
-      ipv6_cidr_blocks = []
-      prefix_list_ids  = []
-      security_groups  = []
-      self             = false
-    }
-  ]
+  {
+    from_port        = 80
+    to_port          = 80
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]  # Allow HTTP traffic from anywhere
+    ipv6_cidr_blocks = []
+    prefix_list_ids  = []
+    security_groups  = []
+    self             = false
+    description      = "Allow inbound HTTP traffic from anywhere"
+  },
+  {
+    from_port        = 443
+    to_port          = 443
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]  # Allow HTTPS traffic from anywhere
+    ipv6_cidr_blocks = []
+    prefix_list_ids  = []
+    security_groups  = []
+    self             = false
+    description      = "Allow inbound HTTPS traffic from anywhere"
+  }
+]
+
 lb_sg_name       = "prod_lb_security_group"
-lb_sg_description = "security group for eks production cluster"
+lb_sg_description = "Security group for Load Balancer in EKS production cluster"
 lb_tags = {
   Environment = "production"
   Project     = "portfolio_project"
