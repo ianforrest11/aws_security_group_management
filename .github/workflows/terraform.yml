@@ -56,7 +56,7 @@ jobs:
           terraform validate
 
           # Plan Terraform changes
-          terraform plan -var-file=../variables/terraform.tfvars
+          terraform plan -var-file=../variables/prod.tfvars
           
           # Apply Terraform changes (auto-approve for automation)
-          terraform apply -auto-approve -var-file=../variables/terraform.tfvars
+          terraform apply -auto-approve -var-file=../variables/prod.tfvars
