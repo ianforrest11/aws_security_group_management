@@ -25,11 +25,11 @@ eks_ingress_rules = [
     self             = false
   }
 ]
-eks_sg_name       = "prod-eks-security-groud"
+eks_sg_name       = "prod_eks_security_group"
 eks_sg_description = "security group for eks production cluster"
 eks_tags = {
   Environment = "production"
-  Project     = "portfolio-project"
+  Project     = "portfolio_project"
 }
 
 ### LB Security Group Variabels ###
@@ -68,9 +68,9 @@ lb_ingress_rules = [
       self             = false
     }
   ]
-lb_sg_name       = "prod-lb-security-group"
+lb_sg_name       = "prod_lb_security_group"
 lb_sg_description = "security group for eks production cluster"
 lb_tags = {
   Environment = "production"
-  Project     = "portfolio-project"
+  Project     = "portfolio_project"
 }
