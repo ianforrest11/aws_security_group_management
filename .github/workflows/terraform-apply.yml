@@ -25,6 +25,7 @@ jobs:
       - name: Apply Terraform security_group_management
         run: |
           cd security_group_management/terraform
+          terraform init
           terraform apply -auto-approve -var-file=../variables/prod.tfvars
 
   terraform-apply-security-group-rule:
@@ -44,4 +45,5 @@ jobs:
       - name: Apply Terraform security_group_rule_management
         run: |
           cd security_group_rule_management/terraform
+          terraform init
           terraform apply -auto-approve -var-file=../variables/prod.tfvars
