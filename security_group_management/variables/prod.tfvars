@@ -102,3 +102,48 @@ eks_node_group_tags = {
   Environment = "production"
   Project     = "portfolio_project"
 }
+
+### LB Security Group Variables ###
+lb_egress_rules = [
+  {
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = []
+    prefix_list_ids  = []
+    security_groups  = []
+    self             = false
+    description      = "Allow all outbound traffic"
+  }
+]
+lb_ingress_rules = [
+  {
+    from_port        = 80
+    to_port          = 80
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]  # Allow HTTP traffic from anywhere
+    ipv6_cidr_blocks = []
+    prefix_list_ids  = []
+    security_groups  = []
+    self             = false
+    description      = "Allow inbound HTTP traffic from anywhere"
+  },
+  {
+    from_port        = 443
+    to_port          = 443
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]  # Allow HTTPS traffic from anywhere
+    ipv6_cidr_blocks = []
+    prefix_list_ids  = []
+    security_groups  = []
+    self             = false
+    description      = "Allow inbound HTTPS traffic from anywhere"
+  }
+]
+lb_sg_name       = "prod_lb_security_group"
+lb_sg_description = "Security group for Load Balancer in EKS production cluster"
+lb_tags = {
+  Environment = "production"
+  Project     = "portfolio_project"
+}
