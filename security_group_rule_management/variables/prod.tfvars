@@ -12,5 +12,9 @@ allow_https_from_lb_to_prod_eks_https_to_port   = 443
 allow_https_from_lb_to_prod_eks_protocol        = "tcp"
 allow_https_from_lb_to_prod_eks_https_description = "Allow HTTPS traffic from Load Balancer to EKS"
 
-# VPC ID
-vpc_id = "vpc-0bf3b130d5bb3b5e5"
+# Production bastion host ssh to EKS node groups Rules
+allow_ssh_from_bastion_host_to_prod_eks_rule_type         = "ingress"
+allow_ssh_from_bastion_host_to_prod_eks_https_from_port   = 22
+allow_ssh_from_bastion_host_to_prod_eks_https_to_port     = 22
+allow_ssh_from_bastion_host_to_prod_eks_protocol          = "tcp"
+allow_ssh_from_bastion_host_to_prod_eks_https_description = "Allow ssh from bastion host to EKS worker nodes"

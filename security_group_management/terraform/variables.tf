@@ -1,3 +1,10 @@
+# EC2 Bastion Host Securiy Group Variables
+variable "ec2_bastion_host_egress_rules" {}
+variable "ec2_bastion_host_ingress_rules" {}
+variable "ec2_bastion_host_sg_description" {}
+variable "ec2_bastion_host_sg_name" {}
+variable "ec2_bastion_host_tags" {}
+
 # EKS Securiy Group Variables
 variable "eks_egress_rules" {}
 variable "eks_ingress_rules" {}

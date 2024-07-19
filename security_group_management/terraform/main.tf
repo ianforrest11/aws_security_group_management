@@ -1,3 +1,16 @@
+module "ec2_bastion_host_security_group" {
+  source = "git@github.com:ianforrest11/terraform_templates.git//aws/security_group_security_group?ref=main"
+
+  name        = var.ec2_bastion_host_sg_name
+  description = var.ec2_bastion_host_sg_description
+  vpc_id      = data.aws_vpc.default_vpc.id
+
+  ingress_rules = var.ec2_bastion_host_ingress_rules
+  egress_rules  = var.ec2_bastion_host_egress_rules
+
+  tags = var.ec2_bastion_host_tags
+}
+
 module "eks_security_group" {
   source = "git@github.com:ianforrest11/terraform_templates.git//aws/security_group_security_group?ref=main"
 
