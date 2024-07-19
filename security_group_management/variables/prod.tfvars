@@ -13,18 +13,29 @@ ec2_bastion_host_egress_rules = [
   }
 ]
 ec2_bastion_host_ingress_rules = [
-  # Allow all traffic within the VPC
+  # Allow all traffic from ssh
   {
     from_port        = 22
     to_port          = 22
     protocol         = "tcp"
-    cidr_blocks      = ["187.246.143.106/32", "148.222.132.208/32"]
+    cidr_blocks      = ["148.222.132.208/32"]
     ipv6_cidr_blocks = []
     prefix_list_ids  = []
     security_groups  = []
     self             = false
     description      = "Allow ssh from bastion host EC2"
-  }
+  },
+  {
+    from_port        = 22
+    to_port          = 22
+    protocol         = "tcp"
+    cidr_blocks      = ["148.222.132.208/32"]
+    ipv6_cidr_blocks = []
+    prefix_list_ids  = []
+    security_groups  = []
+    self             = false
+    description      = "Allow ssh from bastion host EC2"
+  }  
 ]
 ec2_bastion_host_sg_name        = "prod_ec2_bastion_host_security_group"
 ec2_bastion_host_sg_description = "Security group for bastion EC2 to access EKS production cluster"
