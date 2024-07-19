@@ -14,10 +14,10 @@ variable "allow_https_from_lb_to_prod_eks_https_description" {}
 
 # production Bastion Host Security Group ssh to EKS rule
 variable "allow_ssh_from_bastion_host_to_prod_eks_rule_type" {}
-variable "allow_ssh_from_bastion_host_to_prod_eks_https_from_port" {}
-variable "allow_ssh_from_bastion_host_to_prod_eks_https_to_port" {}
+variable "allow_ssh_from_bastion_host_to_prod_eks_from_port" {}
+variable "allow_ssh_from_bastion_host_to_prod_eks_to_port" {}
 variable "allow_ssh_from_bastion_host_to_prod_eks_protocol" {}
-variable "allow_ssh_from_bastion_host_to_prod_eks_https_description" {}
+variable "allow_ssh_from_bastion_host_to_prod_eks_description" {}
 
 
 
