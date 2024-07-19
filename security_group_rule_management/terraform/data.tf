@@ -27,6 +27,17 @@ data "aws_security_group" "prod_eks_security_group" {
   }
 }
 
+data "aws_security_group" "prod_eks_node_group_security_group" {
+  filter {
+    name   = "group-name"
+    values = ["prod_eks_node_group_security_group"]
+  }
+  filter {
+    name   = "vpc-id"
+    values = [data.aws_vpc.default_vpc.id]
+  }
+}
+
 data "aws_security_group" "prod_ec2_bastion_host_security_group" {
   filter {
     name   = "group-name"
