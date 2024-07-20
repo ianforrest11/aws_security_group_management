@@ -3,7 +3,6 @@ environment                = "production"
 
 # Production EKS Security Group Rules
 ## VPC Access to Prod EKS Cluster
-allow_vpc_access_to_eks_cidr_blocks = ["10.0.0.0/16"]
 allow_vpc_access_to_eks_description = "allow traffic from within VPC to production EKS cluster"
 ## HTTP Access to Prod EKS Cluster
 allow_http_from_lb_to_eks_http_description = "Allow HTTP traffic from Load Balancer to production EKS cluster"
