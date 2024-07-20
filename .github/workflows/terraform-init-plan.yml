@@ -35,7 +35,7 @@ jobs:
         with:
           role-to-assume: ${{ secrets.RUNNER_ROLE_ARN }}
           role-session-name: GitHub_to_AWS_via_FederatedOIDC
-          aws-region: us-east-1
+          aws-region: ${{ secrets.AWS_REGION }}
 
       - name: Sts GetCallerIdentity
         run: aws sts get-caller-identity
@@ -43,6 +43,7 @@ jobs:
       - name: Init and Plan Terraform security_group_management
         run: |
           cd security_group_management/terraform
+          sed -i "s/PLACEHOLDER_ENV/${{ env.ENVIRONMENT }}/g" provider.tf
           terraform init
           terraform validate
           terraform plan -var-file=${{ env.VAR_FILE }}
@@ -73,7 +74,7 @@ jobs:
           with:
             role-to-assume: ${{ secrets.RUNNER_ROLE_ARN }}
             role-session-name: GitHub_to_AWS_via_FederatedOIDC
-            aws-region: us-east-1
+            aws-region: ${{ secrets.AWS_REGION }}
 
         - name: Sts GetCallerIdentity
           run: aws sts get-caller-identity
