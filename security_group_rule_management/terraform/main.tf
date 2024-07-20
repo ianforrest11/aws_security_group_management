@@ -49,31 +49,19 @@ module "sg_rule_allow_ssh_from_bastion_host_to_eks" {
   description              = var.allow_ssh_from_bastion_host_to_prod_eks_nodes_description
 }
 
-# # Bastion Host Security Group Rules
-# module "sg_rule_bastion_host_egress_allow_all" {
-#   source                = "git@github.com:ianforrest11/terraform_templates.git//aws/security_group_security_group_rule?ref=main"
-#   type                  = "egress"
-#   from_port             = 0
-#   to_port               = 0
-#   protocol              = "-1"
-#   security_group_id     = var.prod_ec2_bastion_host_security_group_id
-#   cidr_blocks           = var.bastion_host_egress_cidr_blocks
-#   description           = "Allow all outbound traffic"
-# }
-
-# module "sg_rule_bastion_host_ingress_ssh_1" {
-#   source                = "git@github.com:ianforrest11/terraform_templates.git//aws/security_group_security_group_rule?ref=main"
-#   type                  = "ingress"
-#   from_port             = 22
-#   to_port               = 22
-#   protocol              = "tcp"
-#   security_group_id     = var.prod_ec2_bastion_host_security_group_id
-#   cidr_blocks           = var.bastion_host_ingress_ssh_cidr_blocks_1
-#   description           = "Allow ssh from bastion host EC2"
-# }
+module "sg_rule_bastion_host_ingress_ssh" {
+  source                = "git@github.com:ianforrest11/aws_terraform_security_group_templates.git//security_group_rule?ref=main"
+  type                  = "ingress"
+  from_port             = var.port_22
+  to_port               = var.port_22
+  protocol              = var.protocol_tcp
+  security_group_id     = data.aws_security_group.prod_ec2_bastion_host_security_group.id
+  cidr_blocks           = var.allow_ssh_from_local_to_prod_bastion_host_cidr_blocks
+  description           = var.allow_ssh_from_local_to_prod_bastion_host_description
+}
 
 # module "sg_rule_bastion_host_ingress_ssh_2" {
-#   source                = "git@github.com:ianforrest11/terraform_templates.git//aws/security_group_security_group_rule?ref=main"
+#   source                = "git@github.com:ianforrest11/aws_terraform_security_group_templates.git//security_group_rule?ref=main"
 #   type                  = "ingress"
 #   from_port             = 22
 #   to_port               = 22
@@ -84,19 +72,8 @@ module "sg_rule_allow_ssh_from_bastion_host_to_eks" {
 # }
 
 # # EKS Security Group Rules
-# module "sg_rule_eks_egress_allow_all" {
-#   source                = "git@github.com:ianforrest11/terraform_templates.git//aws/security_group_security_group_rule?ref=main"
-#   type                  = "egress"
-#   from_port             = 0
-#   to_port               = 0
-#   protocol              = "-1"
-#   security_group_id     = var.prod_eks_security_group_id
-#   cidr_blocks           = var.eks_egress_cidr_blocks
-#   description           = "Allow all outbound traffic"
-# }
-
 # module "sg_rule_eks_ingress_vpc" {
-#   source                = "git@github.com:ianforrest11/terraform_templates.git//aws/security_group_security_group_rule?ref=main"
+#   source                = "git@github.com:ianforrest11/aws_terraform_security_group_templates.git//security_group_rule?ref=main"
 #   type                  = "ingress"
 #   from_port             = 0
 #   to_port               = 0
@@ -107,19 +84,8 @@ module "sg_rule_allow_ssh_from_bastion_host_to_eks" {
 # }
 
 # # EKS Node Group Security Group Rules
-# module "sg_rule_eks_node_group_egress_allow_all" {
-#   source                = "git@github.com:ianforrest11/terraform_templates.git//aws/security_group_security_group_rule?ref=main"
-#   type                  = "egress"
-#   from_port             = 0
-#   to_port               = 0
-#   protocol              = "-1"
-#   security_group_id     = var.prod_eks_node_group_security_group_id
-#   cidr_blocks           = var.eks_node_group_egress_cidr_blocks
-#   description           = "Allow all outbound traffic"
-# }
-
 # module "sg_rule_eks_node_group_ingress_ssh" {
-#   source                = "git@github.com:ianforrest11/terraform_templates.git//aws/security_group_security_group_rule?ref=main"
+#   source                = "git@github.com:ianforrest11/aws_terraform_security_group_templates.git//security_group_rule?ref=main"
 #   type                  = "ingress"
 #   from_port             = 22
 #   to_port               = 22
@@ -130,19 +96,8 @@ module "sg_rule_allow_ssh_from_bastion_host_to_eks" {
 # }
 
 # # Load Balancer Security Group Rules
-# module "sg_rule_lb_egress_allow_all" {
-#   source                = "git@github.com:ianforrest11/terraform_templates.git//aws/security_group_security_group_rule?ref=main"
-#   type                  = "egress"
-#   from_port             = 0
-#   to_port               = 0
-#   protocol              = "-1"
-#   security_group_id     = var.prod_lb_security_group_id
-#   cidr_blocks           = var.lb_egress_cidr_blocks
-#   description           = "Allow all outbound traffic"
-# }
-
 # module "sg_rule_lb_ingress_http" {
-#   source                = "git@github.com:ianforrest11/terraform_templates.git//aws/security_group_security_group_rule?ref=main"
+#   source                = "git@github.com:ianforrest11/aws_terraform_security_group_templates.git//security_group_rule?ref=main"
 #   type                  = "ingress"
 #   from_port             = 80
 #   to_port               = 80
@@ -153,7 +108,7 @@ module "sg_rule_allow_ssh_from_bastion_host_to_eks" {
 # }
 
 # module "sg_rule_lb_ingress_https" {
-#   source                = "git@github.com:ianforrest11/terraform_templates.git//aws/security_group_security_group_rule?ref=main"
+#   source                = "git@github.com:ianforrest11/aws_terraform_security_group_templates.git//security_group_rule?ref=main"
 #   type                  = "ingress"
 #   from_port             = 443
 #   to_port               = 443

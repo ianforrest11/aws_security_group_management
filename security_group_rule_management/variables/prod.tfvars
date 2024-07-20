@@ -18,3 +18,7 @@ allow_https_from_lb_to_prod_eks_https_description = "Allow HTTPS traffic from Lo
 
 # Production bastion host ssh to EKS node groups Rules
 allow_ssh_from_bastion_host_to_prod_eks_nodes_description = "Allow ssh from bastion host to EKS worker nodes"
+
+# production Bastion Host Security Group ingress home ip
+allow_ssh_from_local_to_prod_bastion_host_description = "allow local ssh into bastian host"
+allow_ssh_from_local_to_prod_bastion_host_cidr_blocks = ["148.222.132.208/32","187.246.143.106/32"]
