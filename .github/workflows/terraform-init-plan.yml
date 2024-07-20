@@ -45,7 +45,7 @@ jobs:
           cd security_group_management/terraform
           terraform init
           terraform validate
-          terraform plan -var-file==${{ env.VAR_FILE }}
+          terraform plan -var-file=${{ env.VAR_FILE }}
 
   terraform-init-plan-security-group-rule:
       name: Init and Plan Terraform security_group_rule_management
