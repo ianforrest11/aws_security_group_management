@@ -7,10 +7,10 @@ module "general_outbound_sg_rule" {
   protocol                 = var.protocol_all
   cidr_blocks              = var.default_egress_cidr_blocks
   security_group_ids       = [
-    data.aws_security_group.prod_eks_security_group.id,
-    data.aws_security_group.prod_eks_node_group_security_group.id,
-    data.aws_security_group.prod_lb_security_group.id,
-    data.aws_security_group.prod_ec2_bastion_host_security_group.id
+    data.aws_security_group.eks_security_group.id,
+    data.aws_security_group.eks_node_group_security_group.id,
+    data.aws_security_group.lb_security_group.id,
+    data.aws_security_group.ec2_bastion_host_security_group.id
   ]
   description              = var.default_egress_description
 }
@@ -23,8 +23,8 @@ module "sg_rule_allow_http_from_lb_to_eks" {
   from_port                = var.port_80
   to_port                  = var.port_80
   protocol                 = var.protocol_tcp
-  security_group_id        = data.aws_security_group.prod_eks_security_group.id
-  source_security_group_id = data.aws_security_group.prod_lb_security_group.id
+  security_group_id        = data.aws_security_group.eks_security_group.id
+  source_security_group_id = data.aws_security_group.lb_security_group.id
   description              = var.allow_http_from_lb_to_eks_http_description
 }
 module "sg_rule_allow_https_from_lb_to_eks" {
@@ -33,8 +33,8 @@ module "sg_rule_allow_https_from_lb_to_eks" {
   from_port                = var.port_443
   to_port                  = var.port_443
   protocol                 = var.protocol_tcp
-  security_group_id        = data.aws_security_group.prod_eks_security_group.id
-  source_security_group_id = data.aws_security_group.prod_lb_security_group.id
+  security_group_id        = data.aws_security_group.eks_security_group.id
+  source_security_group_id = data.aws_security_group.lb_security_group.id
   description              = var.allow_https_from_lb_to_eks_https_description
 }
 ## security group rule to allow VPC Access to Prod EKS Cluster
@@ -44,7 +44,7 @@ module "sg_rule_eks_ingress_vpc" {
   from_port             = var.port_0
   to_port               = var.port_0
   protocol              = var.protocol_all
-  security_group_id     = data.aws_security_group.prod_eks_security_group.id
+  security_group_id     = data.aws_security_group.eks_security_group.id
   cidr_blocks           = var.allow_vpc_access_to_eks_cidr_blocks
   description           = var.allow_vpc_access_to_eks_description
 }
@@ -57,8 +57,8 @@ module "sg_rule_allow_ssh_from_bastion_host_to_eks" {
   from_port                = var.port_22
   to_port                  = var.port_22
   protocol                 = var.protocol_tcp
-  security_group_id        = data.aws_security_group.prod_eks_node_group_security_group.id
-  source_security_group_id = data.aws_security_group.prod_ec2_bastion_host_security_group.id
+  security_group_id        = data.aws_security_group.eks_node_group_security_group.id
+  source_security_group_id = data.aws_security_group.ec2_bastion_host_security_group.id
   description              = var.allow_ssh_from_bastion_host_to_eks_nodes_description
 }
 
@@ -70,7 +70,7 @@ module "sg_rule_bastion_host_ingress_ssh" {
   from_port             = var.port_22
   to_port               = var.port_22
   protocol              = var.protocol_tcp
-  security_group_id     = data.aws_security_group.prod_ec2_bastion_host_security_group.id
+  security_group_id     = data.aws_security_group.ec2_bastion_host_security_group.id
   cidr_blocks           = var.allow_ssh_from_local_to_bastion_host_cidr_blocks
   description           = var.allow_ssh_from_local_to_bastion_host_description
 }
@@ -83,7 +83,7 @@ module "sg_rule_lb_ingress_http" {
   from_port             = var.port_80
   to_port               = var.port_80
   protocol              = var.protocol_tcp
-  security_group_id     = data.aws_security_group.prod_lb_security_group.id
+  security_group_id     = data.aws_security_group.lb_security_group.id
   cidr_blocks           = var.lb_ingress_http_cidr_blocks
   description           = var.lb_ingress_http_description
 }
@@ -93,7 +93,7 @@ module "sg_rule_lb_ingress_https" {
   from_port             = var.port_443
   to_port               = var.port_443
   protocol              = var.protocol_tcp
-  security_group_id     = data.aws_security_group.prod_lb_security_group.id
+  security_group_id     = data.aws_security_group.lb_security_group.id
   cidr_blocks           = var.lb_ingress_https_cidr_blocks
   description           = var.lb_ingress_https_description
 }

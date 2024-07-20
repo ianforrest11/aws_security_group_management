@@ -5,10 +5,10 @@ data "aws_vpc" "default_vpc" {
   }
 }
 
-data "aws_security_group" "prod_lb_security_group" {
+data "aws_security_group" "lb_security_group" {
   filter {
     name   = "group-name"
-    values = ["prod_lb_security_group"]
+    values = ["${var.environment}_lb_security_group"]
   }
   filter {
     name   = "vpc-id"
@@ -16,10 +16,10 @@ data "aws_security_group" "prod_lb_security_group" {
   }
 }
 
-data "aws_security_group" "prod_eks_security_group" {
+data "aws_security_group" "eks_security_group" {
   filter {
     name   = "group-name"
-    values = ["prod_eks_security_group"]
+    values = ["${var.environment}_eks_security_group"]
   }
   filter {
     name   = "vpc-id"
@@ -27,10 +27,10 @@ data "aws_security_group" "prod_eks_security_group" {
   }
 }
 
-data "aws_security_group" "prod_eks_node_group_security_group" {
+data "aws_security_group" "eks_node_group_security_group" {
   filter {
     name   = "group-name"
-    values = ["prod_eks_node_group_security_group"]
+    values = ["${var.environment}_eks_node_group_security_group"]
   }
   filter {
     name   = "vpc-id"
@@ -38,10 +38,10 @@ data "aws_security_group" "prod_eks_node_group_security_group" {
   }
 }
 
-data "aws_security_group" "prod_ec2_bastion_host_security_group" {
+data "aws_security_group" "ec2_bastion_host_security_group" {
   filter {
     name   = "group-name"
-    values = ["prod_ec2_bastion_host_security_group"]
+    values = ["${var.environment}_ec2_bastion_host_security_group"]
   }
   filter {
     name   = "vpc-id"
