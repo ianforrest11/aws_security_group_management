@@ -81,6 +81,7 @@ jobs:
         - name: Init and Plan Terraform security_group_rule_management
           run: |
             cd security_group_rule_management/terraform
+            sed -i "s/PLACEHOLDER_ENV/${{ env.ENVIRONMENT }}/g" security_group_rule_management/terraform/providers.tf
             terraform init
             terraform validate
             terraform plan -var-file=${{ env.VAR_FILE }} -var-file=../variables/global.tfvars

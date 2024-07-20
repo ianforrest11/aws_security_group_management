@@ -9,7 +9,7 @@ terraform {
 
   backend "s3" {
     bucket         = "iforrest-aws-s3-terraform-state"
-    key            = "${var.environment}/security_group_rules"
+    key            = "PLACEHOLDER_ENV/security_group_rules"
     region         = "us-east-1"
     dynamodb_table = "iforrest-aws-dynamodb-terraform-state"
     encrypt        = true
