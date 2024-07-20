@@ -15,8 +15,9 @@ module "general_outbound_sg_rule" {
   description              = var.default_egress_description
 }
 
-# security group module to open eks cluster to load balancer
-module "sg_rule_allow_http_from_lb_to_eks" {
+# Prod EKS Security Group Rules
+## security group rule to allow prod eks cluster access to prod load balancer HTTP/HTTPS
+module "prod_sg_rule_allow_http_from_lb_to_eks" {
   source = "git@github.com:ianforrest11/aws_terraform_security_group_templates.git//security_group_rule?ref=main"
   type                     = var.rule_type_ingress
   from_port                = var.port_80
@@ -26,7 +27,7 @@ module "sg_rule_allow_http_from_lb_to_eks" {
   source_security_group_id = data.aws_security_group.prod_lb_security_group.id
   description              = var.allow_http_from_lb_to_prod_eks_http_description
 }
-module "sg_rule_allow_https_from_lb_to_eks" {
+module "prod_sg_rule_allow_https_from_lb_to_eks" {
   source = "git@github.com:ianforrest11/aws_terraform_security_group_templates.git//security_group_rule?ref=main"
   type                     = var.rule_type_ingress
   from_port                = var.port_443
@@ -36,9 +37,21 @@ module "sg_rule_allow_https_from_lb_to_eks" {
   source_security_group_id = data.aws_security_group.prod_lb_security_group.id
   description              = var.allow_https_from_lb_to_prod_eks_https_description
 }
+## security group rule to allow VPC Access to Prod EKS Cluster
+module "prod_sg_rule_eks_ingress_vpc" {
+  source                = "git@github.com:ianforrest11/aws_terraform_security_group_templates.git//security_group_rule?ref=main"
+  type                  = var.rule_type_ingress
+  from_port             = var.port_0
+  to_port               = var.port_0
+  protocol              = var.protocol_all
+  security_group_id     = data.aws_security_group.prod_eks_security_group.id
+  cidr_blocks           = var.allow_vpc_access_to_prod_eks_cidr_blocks
+  description           = var.allow_vpc_access_to_prod_eks_description
+}
 
-# security group module to allow ssh access to eks cluster from bastion host
-module "sg_rule_allow_ssh_from_bastion_host_to_eks" {
+# Prod EKS Node Group Security Group Rules
+## security group rule to allow ssh access to eks cluster from bastion host
+module "prod_sg_rule_allow_ssh_from_bastion_host_to_eks" {
   source = "git@github.com:ianforrest11/aws_terraform_security_group_templates.git//security_group_rule?ref=main"
   type                     = var.rule_type_ingress
   from_port                = var.port_22
@@ -49,7 +62,9 @@ module "sg_rule_allow_ssh_from_bastion_host_to_eks" {
   description              = var.allow_ssh_from_bastion_host_to_prod_eks_nodes_description
 }
 
-module "sg_rule_bastion_host_ingress_ssh" {
+# Prod EKS Bastian Host EC2 Security Group Rules
+## security group rule to allow local ssh access to eks cluster bastion host EC2
+module "prod_sg_rule_bastion_host_ingress_ssh" {
   source                = "git@github.com:ianforrest11/aws_terraform_security_group_templates.git//security_group_rule?ref=main"
   type                  = "ingress"
   from_port             = var.port_22
@@ -60,19 +75,8 @@ module "sg_rule_bastion_host_ingress_ssh" {
   description           = var.allow_ssh_from_local_to_prod_bastion_host_description
 }
 
-# module "sg_rule_bastion_host_ingress_ssh_2" {
-#   source                = "git@github.com:ianforrest11/aws_terraform_security_group_templates.git//security_group_rule?ref=main"
-#   type                  = "ingress"
-#   from_port             = 22
-#   to_port               = 22
-#   protocol              = "tcp"
-#   security_group_id     = var.prod_ec2_bastion_host_security_group_id
-#   cidr_blocks           = var.bastion_host_ingress_ssh_cidr_blocks_2
-#   description           = "Allow ssh from bastion host EC2"
-# }
-
 # # EKS Security Group Rules
-# module "sg_rule_eks_ingress_vpc" {
+# module "prod_sg_rule_eks_ingress_vpc" {
 #   source                = "git@github.com:ianforrest11/aws_terraform_security_group_templates.git//security_group_rule?ref=main"
 #   type                  = "ingress"
 #   from_port             = 0
