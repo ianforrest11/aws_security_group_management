@@ -44,36 +44,37 @@ jobs:
           terraform validate
           terraform plan -var-file=../variables/prod.tfvars
 
-  # terraform-init-plan-security-group-rule:
-  #   name: Init and Plan Terraform security_group_rule_management
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Checkout repository
-  #       uses: actions/checkout@v2
+  terraform-init-plan-security-group-rule:
+    name: Init and Plan Terraform security_group_rule_management
+    runs-on: ubuntu-latest
+    needs: terraform-init-plan-security-group
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-  #     - name: Configure SSH
-  #       env:
-  #         SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-  #       run: |
-  #         mkdir -p ~/.ssh/
-  #         echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
-  #         chmod 600 ~/.ssh/id_rsa
-  #         ssh-keyscan github.com >> ~/.ssh/known_hosts
-  #         chmod 644 ~/.ssh/known_hosts
+      - name: Configure SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        run: |
+          mkdir -p ~/.ssh/
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
       
-  #     - name: Configure AWS Credentials
-  #       uses: aws-actions/configure-aws-credentials@v1.7.0
-  #       with:
-  #         role-to-assume: arn:aws:iam::128333337075:role/GitHubActionRunner
-  #         role-session-name: GitHub_to_AWS_via_FederatedOIDC
-  #         aws-region: us-east-1
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1.7.0
+        with:
+          role-to-assume: arn:aws:iam::128333337075:role/GitHubActionRunner
+          role-session-name: GitHub_to_AWS_via_FederatedOIDC
+          aws-region: us-east-1
 
-  #     - name: Sts GetCallerIdentity
-  #       run: aws sts get-caller-identity
+      - name: Sts GetCallerIdentity
+        run: aws sts get-caller-identity
 
-  #     - name: Init and Plan Terraform security_group_rule_management
-  #       run: |
-  #         cd security_group_rule_management/terraform
-  #         terraform init
-  #         terraform validate
-  #         terraform plan -var-file=../variables/prod.tfvars
+      - name: Init and Plan Terraform security_group_rule_management
+        run: |
+          cd security_group_rule_management/terraform
+          terraform init
+          terraform validate
+          terraform plan -var-file=../variables/prod.tfvars

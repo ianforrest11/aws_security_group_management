@@ -38,32 +38,33 @@ jobs:
           terraform init
           terraform apply -auto-approve -var-file=../variables/prod.tfvars
 
-  # terraform-apply-security-group-rule:
-  #   name: Apply Terraform security_group_rule_management
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Checkout repository
-  #       uses: actions/checkout@v2
+  terraform-apply-security-group-rule:
+    name: Apply Terraform security_group_rule_management
+    runs-on: ubuntu-latest
+    needs: terraform-apply-security-group
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-  #     - name: Configure SSH
-  #       env:
-  #         SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-  #       run: |
-  #         mkdir -p ~/.ssh/
-  #         echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
-  #         chmod 600 ~/.ssh/id_rsa
-  #         ssh-keyscan github.com >> ~/.ssh/known_hosts
-  #         chmod 644 ~/.ssh/known_hosts
+      - name: Configure SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        run: |
+          mkdir -p ~/.ssh/
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
 
-  #     - name: Configure AWS Credentials
-  #       uses: aws-actions/configure-aws-credentials@v1.7.0
-  #       with:
-  #         role-to-assume: arn:aws:iam::128333337075:role/GitHubActionRunner
-  #         role-session-name: GitHub_to_AWS_via_FederatedOIDC
-  #         aws-region: us-east-1
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1.7.0
+        with:
+          role-to-assume: arn:aws:iam::128333337075:role/GitHubActionRunner
+          role-session-name: GitHub_to_AWS_via_FederatedOIDC
+          aws-region: us-east-1
 
-  #     - name: Apply Terraform security_group_rule_management
-  #       run: |
-  #         cd security_group_rule_management/terraform
-  #         terraform init
-  #         terraform apply -auto-approve -var-file=../variables/prod.tfvars
+      - name: Apply Terraform security_group_rule_management
+        run: |
+          cd security_group_rule_management/terraform
+          terraform init
+          terraform apply -auto-approve -var-file=../variables/prod.tfvars
