@@ -15,8 +15,8 @@ module "general_outbound_sg_rule" {
   description              = var.default_egress_description
 }
 
-# Prod EKS Security Group Rules
-## security group rule to allow prod load balancer to access prod eks cluster via HTTP/HTTPS
+# EKS Security Group Rules
+## security group rule to allow load balancer to access eks cluster via HTTP/HTTPS
 module "sg_rule_allow_http_from_lb_to_eks" {
   source = "git@github.com:ianforrest11/aws_terraform_security_group_templates.git//security_group_rule?ref=main"
   type                     = var.rule_type_ingress
@@ -37,7 +37,7 @@ module "sg_rule_allow_https_from_lb_to_eks" {
   source_security_group_id = data.aws_security_group.lb_security_group.id
   description              = var.allow_https_from_lb_to_eks_https_description
 }
-## security group rule to allow VPC Access to Prod EKS Cluster
+## security group rule to allow VPC Access to EKS Cluster
 module "sg_rule_eks_ingress_vpc" {
   source                = "git@github.com:ianforrest11/aws_terraform_security_group_templates.git//security_group_rule?ref=main"
   type                  = var.rule_type_ingress
@@ -49,7 +49,7 @@ module "sg_rule_eks_ingress_vpc" {
   description           = var.allow_vpc_access_to_eks_description
 }
 
-# Prod EKS Node Group Security Group Rules
+# EKS Node Group Security Group Rules
 ## security group rule to allow ssh access to eks cluster from bastion host
 module "sg_rule_allow_ssh_from_bastion_host_to_eks" {
   source = "git@github.com:ianforrest11/aws_terraform_security_group_templates.git//security_group_rule?ref=main"
@@ -62,7 +62,7 @@ module "sg_rule_allow_ssh_from_bastion_host_to_eks" {
   description              = var.allow_ssh_from_bastion_host_to_eks_nodes_description
 }
 
-# Prod EKS Bastian Host EC2 Security Group Rules
+# EKS Bastian Host EC2 Security Group Rules
 ## security group rule to allow local ssh access to eks cluster bastion host EC2
 module "sg_rule_bastion_host_ingress_ssh" {
   source                = "git@github.com:ianforrest11/aws_terraform_security_group_templates.git//security_group_rule?ref=main"
@@ -76,7 +76,7 @@ module "sg_rule_bastion_host_ingress_ssh" {
 }
 
 # Load Balancer Security Group Rules
-## security group rules to allow internet access to prod load balancer HTTP/HTTPS
+## security group rules to allow internet access to load balancer HTTP/HTTPS
 module "sg_rule_lb_ingress_http" {
   source                = "git@github.com:ianforrest11/aws_terraform_security_group_templates.git//security_group_rule?ref=main"
   type                  = var.rule_type_ingress
