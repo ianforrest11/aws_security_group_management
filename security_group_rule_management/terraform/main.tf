@@ -15,39 +15,39 @@ module "general_outbound_sg_rule" {
   description              = var.default_egress_description
 }
 
-# # security group module to open eks cluster to load balancer
-# module "sg_rule_allow_http_from_lb_to_eks" {
-#   source = "git@github.com:ianforrest11/terraform_templates.git//aws/security_group_security_group_rule?ref=main"
-#   type                     = var.rule_type_ingress
-#   from_port                = var.port_80
-#   to_port                  = var.port_80
-#   protocol                 = var.protocol_tcp
-#   security_group_id        = data.aws_security_group.prod_eks_security_group.id
-#   source_security_group_id = data.aws_security_group.prod_lb_security_group.id
-#   description              = var.allow_http_from_lb_to_prod_eks_http_description
-# }
-# module "sg_rule_allow_https_from_lb_to_eks" {
-#   source = "git@github.com:ianforrest11/terraform_templates.git//aws/security_group_security_group_rule?ref=main"
-#   type                     = var.rule_type_ingress
-#   from_port                = var.port_443
-#   to_port                  = var.port_443
-#   protocol                 = var.protocol_tcp
-#   security_group_id        = data.aws_security_group.prod_eks_security_group.id
-#   source_security_group_id = data.aws_security_group.prod_lb_security_group.id
-#   description              = var.allow_https_from_lb_to_prod_eks_https_description
-# }
+# security group module to open eks cluster to load balancer
+module "sg_rule_allow_http_from_lb_to_eks" {
+  source = "git@github.com:ianforrest11/aws_terraform_security_group_templates.git//security_group_rule?ref=main"
+  type                     = var.rule_type_ingress
+  from_port                = var.port_80
+  to_port                  = var.port_80
+  protocol                 = var.protocol_tcp
+  security_group_id        = data.aws_security_group.prod_eks_security_group.id
+  source_security_group_id = data.aws_security_group.prod_lb_security_group.id
+  description              = var.allow_http_from_lb_to_prod_eks_http_description
+}
+module "sg_rule_allow_https_from_lb_to_eks" {
+  source = "git@github.com:ianforrest11/aws_terraform_security_group_templates.git//security_group_rule?ref=main"
+  type                     = var.rule_type_ingress
+  from_port                = var.port_443
+  to_port                  = var.port_443
+  protocol                 = var.protocol_tcp
+  security_group_id        = data.aws_security_group.prod_eks_security_group.id
+  source_security_group_id = data.aws_security_group.prod_lb_security_group.id
+  description              = var.allow_https_from_lb_to_prod_eks_https_description
+}
 
-# # security group module to allow ssh access to eks cluster from bastion host
-# module "sg_rule_allow_ssh_from_bastion_host_to_eks" {
-#   source = "git@github.com:ianforrest11/terraform_templates.git//aws/security_group_security_group_rule?ref=main"
-#   type                     = var.rule_type_ingress
-#   from_port                = var.port_22
-#   to_port                  = var.port_22
-#   protocol                 = var.protocol_tcp
-#   security_group_id        = data.aws_security_group.prod_eks_node_group_security_group.id
-#   source_security_group_id = data.aws_security_group.prod_ec2_bastion_host_security_group.id
-#   description              = var.allow_ssh_from_bastion_host_to_prod_eks_nodes_description
-# }
+# security group module to allow ssh access to eks cluster from bastion host
+module "sg_rule_allow_ssh_from_bastion_host_to_eks" {
+  source = "git@github.com:ianforrest11/aws_terraform_security_group_templates.git//security_group_rule?ref=main"
+  type                     = var.rule_type_ingress
+  from_port                = var.port_22
+  to_port                  = var.port_22
+  protocol                 = var.protocol_tcp
+  security_group_id        = data.aws_security_group.prod_eks_node_group_security_group.id
+  source_security_group_id = data.aws_security_group.prod_ec2_bastion_host_security_group.id
+  description              = var.allow_ssh_from_bastion_host_to_prod_eks_nodes_description
+}
 
 # # Bastion Host Security Group Rules
 # module "sg_rule_bastion_host_egress_allow_all" {
