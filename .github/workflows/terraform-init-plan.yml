@@ -78,10 +78,6 @@ jobs:
         - name: Sts GetCallerIdentity
           run: aws sts get-caller-identity
 
-        - name: List files in security_group_rule_management/terraform
-          run: |
-            ls -la security_group_rule_management/terraform
-
         - name: Init and Plan Terraform security_group_rule_management
           run: |
             cd security_group_rule_management/terraform
