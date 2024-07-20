@@ -24,6 +24,14 @@ allow_https_from_lb_to_prod_eks_https_description = "Allow HTTPS traffic from Lo
 allow_ssh_from_bastion_host_to_prod_eks_nodes_description = "Allow ssh from bastion host to EKS worker nodes"
 
 # Production EKS Bastion Host EC2 Security Group Rule Variables
-# production Bastion Host Security Group ingress home ip
+## production Bastion Host Security Group ingress local ips
 allow_ssh_from_local_to_prod_bastion_host_description = "allow local ssh into bastian host ec2"
 allow_ssh_from_local_to_prod_bastion_host_cidr_blocks = ["148.222.132.208/32","187.246.143.106/32"]
+
+# Production Load Balancer Security Group Rules
+## Allow Ingress HTTP Traffic From Internet to Production Load Balancer
+prod_lb_ingress_http_cidr_blocks = ["0.0.0.0/0"]
+prod_lb_ingress_http_description = "Allow Ingress HTTP Traffic From Internet to Production Load Balancer"
+## Allow Ingress HTTPS Traffic From Internet to Production Load Balancer
+prod_lb_ingress_https_cidr_blocks = ["0.0.0.0/0"]
+prod_lb_ingress_https_description = "Allow Ingress HTTPS Traffic From Internet to Production Load Balancer"

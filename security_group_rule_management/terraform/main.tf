@@ -16,7 +16,7 @@ module "general_outbound_sg_rule" {
 }
 
 # Prod EKS Security Group Rules
-## security group rule to allow prod eks cluster access to prod load balancer HTTP/HTTPS
+## security group rule to allow prod load balancer to access prod eks cluster via HTTP/HTTPS
 module "prod_sg_rule_allow_http_from_lb_to_eks" {
   source = "git@github.com:ianforrest11/aws_terraform_security_group_templates.git//security_group_rule?ref=main"
   type                     = var.rule_type_ingress
@@ -75,49 +75,27 @@ module "prod_sg_rule_bastion_host_ingress_ssh" {
   description           = var.allow_ssh_from_local_to_prod_bastion_host_description
 }
 
-# # EKS Security Group Rules
-# module "prod_sg_rule_eks_ingress_vpc" {
-#   source                = "git@github.com:ianforrest11/aws_terraform_security_group_templates.git//security_group_rule?ref=main"
-#   type                  = "ingress"
-#   from_port             = 0
-#   to_port               = 0
-#   protocol              = "-1"
-#   security_group_id     = var.prod_eks_security_group_id
-#   cidr_blocks           = var.eks_ingress_vpc_cidr_blocks
-#   description           = "Allow all inbound traffic within the VPC"
-# }
 
-# # EKS Node Group Security Group Rules
-# module "sg_rule_eks_node_group_ingress_ssh" {
-#   source                = "git@github.com:ianforrest11/aws_terraform_security_group_templates.git//security_group_rule?ref=main"
-#   type                  = "ingress"
-#   from_port             = 22
-#   to_port               = 22
-#   protocol              = "tcp"
-#   security_group_id     = var.prod_eks_node_group_security_group_id
-#   cidr_blocks           = var.eks_node_group_ingress_ssh_cidr_blocks
-#   description           = "Allow SSH access from a specific IP address"
-# }
 
-# # Load Balancer Security Group Rules
-# module "sg_rule_lb_ingress_http" {
-#   source                = "git@github.com:ianforrest11/aws_terraform_security_group_templates.git//security_group_rule?ref=main"
-#   type                  = "ingress"
-#   from_port             = 80
-#   to_port               = 80
-#   protocol              = "tcp"
-#   security_group_id     = var.prod_lb_security_group_id
-#   cidr_blocks           = var.lb_ingress_http_cidr_blocks
-#   description           = "Allow inbound HTTP traffic from anywhere"
-# }
-
-# module "sg_rule_lb_ingress_https" {
-#   source                = "git@github.com:ianforrest11/aws_terraform_security_group_templates.git//security_group_rule?ref=main"
-#   type                  = "ingress"
-#   from_port             = 443
-#   to_port               = 443
-#   protocol              = "tcp"
-#   security_group_id     = var.prod_lb_security_group_id
-#   cidr_blocks           = var.lb_ingress_https_cidr_blocks
-#   description           = "Allow inbound HTTPS traffic from anywhere"
-# }
+# Load Balancer Security Group Rules
+## security group rules to allow internet access to prod load balancer HTTP/HTTPS
+module "prod_sg_rule_lb_ingress_http" {
+  source                = "git@github.com:ianforrest11/aws_terraform_security_group_templates.git//security_group_rule?ref=main"
+  type                  = var.rule_type_ingress
+  from_port             = var.port_80
+  to_port               = var.port_80
+  protocol              = var.protocol_tcp
+  security_group_id     = data.aws_security_group.prod_lb_security_group.id
+  cidr_blocks           = var.prod_lb_ingress_http_cidr_blocks
+  description           = "Allow inbound HTTP traffic from anywhere"
+}
+module "prod_sg_rule_lb_ingress_https" {
+  source                = "git@github.com:ianforrest11/aws_terraform_security_group_templates.git//security_group_rule?ref=main"
+  type                  = var.rule_type_ingress
+  from_port             = var.port_443
+  to_port               = var.port_443
+  protocol              = var.protocol_tcp
+  security_group_id     = data.aws_security_group.prod_lb_security_group.id
+  cidr_blocks           = var.prod_lb_ingress_https_cidr_blocks
+  description           = "Allow inbound HTTPS traffic from anywhere"
+}
