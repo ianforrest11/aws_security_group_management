@@ -9,10 +9,20 @@ allow_vpc_access_to_eks_description = "allow traffic from within VPC to producti
 allow_http_from_lb_to_eks_http_description = "Allow HTTP traffic from Load Balancer to production EKS cluster"
 ## HTTPS Access to Prod EKS Cluster
 allow_https_from_lb_to_eks_https_description = "Allow HTTPS traffic from Load Balancer to production EKS cluster"
+## security group rule to allow worker nodes to communicate with control plane via HTTPS
+allow_https_from_worker_nodes_to_eks_control_plane = "allow worker nodes to communicate with control plane via HTTPS"
 
 # Production EKS Node Group Security Group Rule Variables
 ## production Bastion Host Security Group ssh to EKS node groups
 allow_ssh_from_bastion_host_to_eks_nodes_description = "Allow ssh from bastion host to EKS worker nodes"
+## EKS control plane communication with worker nodes
+allow_inbound_from_eks_control_plane_to_node_group_workers_description = "allow inbound from prod eks control plane to prod eks worker nodes"
+## EKS control plane kubelet communication with worker nodes
+allow_inbound_kubelet_from_eks_control_plane_to_node_group_workers_description = "allow EKS control plane kubelet communication with worker nodes"
+## VPC communication with worker nodes
+allow_inbound_vpc_cidr_to_node_group_workers_description = "allow inbound VPC cidr range communication with worker nodes"
+## Worker node communication with each other
+allow_node_group_worker_communication_description = "allow worker nodes to communicate with each other"
 
 # Production EKS Bastion Host EC2 Security Group Rule Variables
 ## production Bastion Host Security Group ingress local ips

@@ -16,7 +16,7 @@ module "general_outbound_sg_rule" {
 }
 
 # EKS Security Group Rules
-## security group rule to allow load balancer to access eks cluster via HTTP/HTTPS
+## security group rule to allow load balancer to access eks cluster via HTTP
 module "sg_rule_allow_http_from_lb_to_eks" {
   source = "git@github.com:ianforrest11/aws_terraform_security_group_templates.git//security_group_rule?ref=main"
   type                     = var.rule_type_ingress
@@ -27,6 +27,7 @@ module "sg_rule_allow_http_from_lb_to_eks" {
   source_security_group_id = data.aws_security_group.lb_security_group.id
   description              = var.allow_http_from_lb_to_eks_http_description
 }
+## security group rule to allow load balancer to access eks cluster via HTTPS
 module "sg_rule_allow_https_from_lb_to_eks" {
   source = "git@github.com:ianforrest11/aws_terraform_security_group_templates.git//security_group_rule?ref=main"
   type                     = var.rule_type_ingress
@@ -37,6 +38,17 @@ module "sg_rule_allow_https_from_lb_to_eks" {
   source_security_group_id = data.aws_security_group.lb_security_group.id
   description              = var.allow_https_from_lb_to_eks_https_description
 }
+## security group rule to allow worker nodes to communicate with control plane via HTTPS
+module "sg_rule_allow_https_from_worker_nodes_to_eks_control_plane" {
+  source = "git@github.com:ianforrest11/aws_terraform_security_group_templates.git//security_group_rule?ref=main"
+  type                     = var.rule_type_ingress
+  from_port                = var.port_443
+  to_port                  = var.port_443
+  protocol                 = var.protocol_tcp
+  security_group_id        = data.aws_security_group.eks_security_group.id
+  source_security_group_id = data.aws_security_group.eks_node_group_security_group.id
+  description              = var.allow_https_from_worker_nodes_to_eks_control_plane
+}
 ## security group rule to allow VPC Access to EKS Cluster
 module "sg_rule_eks_ingress_vpc" {
   source                = "git@github.com:ianforrest11/aws_terraform_security_group_templates.git//security_group_rule?ref=main"
@@ -45,7 +57,9 @@ module "sg_rule_eks_ingress_vpc" {
   to_port               = var.port_0
   protocol              = var.protocol_all
   security_group_id     = data.aws_security_group.eks_security_group.id
-  cidr_blocks           = var.allow_vpc_access_to_eks_cidr_blocks
+  cidr_blocks           = [
+    data.aws_vpc.default_vpc.cidr_block
+  ]
   description           = var.allow_vpc_access_to_eks_description
 }
 
@@ -61,6 +75,42 @@ module "sg_rule_allow_ssh_from_bastion_host_to_eks" {
   source_security_group_id = data.aws_security_group.ec2_bastion_host_security_group.id
   description              = var.allow_ssh_from_bastion_host_to_eks_nodes_description
 }
+## security group rule to allow traffic from control plane to worker nodes
+module "sg_rule_allow_inbound_from_eks_control_plane_to_node_group_workers" {
+  source = "git@github.com:ianforrest11/aws_terraform_security_group_templates.git//security_group_rule?ref=main"
+  type                     = var.rule_type_ingress
+  from_port                = var.port_10250
+  to_port                  = var.port_10250
+  protocol                 = var.protocol_tcp
+  security_group_id        = data.aws_security_group.eks_node_group_security_group.id
+  source_security_group_id = data.aws_security_group.eks_security_group.id
+  description              = var.allow_inbound_from_eks_control_plane_to_node_group_workers_description
+}
+## security group rule to allow vpc traffic to worker nodes
+module "sg_rule_allow_inbound_from_vpc_cidr_to_node_group_workers" {
+  source = "git@github.com:ianforrest11/aws_terraform_security_group_templates.git//security_group_rule?ref=main"
+  type                     = var.rule_type_ingress
+  from_port                = var.port_0
+  to_port                  = var.port_65535
+  protocol                 = var.protocol_all
+  security_group_id        = data.aws_security_group.eks_node_group_security_group.id
+  cidr_blocks              = [
+    data.aws_vpc.default_vpc.cidr_block
+  ]
+  description              = var.allow_inbound_vpc_cidr_to_node_group_workers_description
+}
+## security group rule to allow worker nodes to communicate with one another
+module "sg_rule_allow_node_group_worker_communication" {
+  source = "git@github.com:ianforrest11/aws_terraform_security_group_templates.git//security_group_rule?ref=main"
+  type                     = var.rule_type_ingress
+  from_port                = var.port_0
+  to_port                  = var.port_65535
+  protocol                 = var.protocol_all
+  security_group_id        = data.aws_security_group.eks_node_group_security_group.id
+  source_security_group_id = data.aws_security_group.eks_node_group_security_group.id
+  description              = var.allow_node_group_worker_communication_description
+}
+
 
 # EKS Bastian Host EC2 Security Group Rules
 ## security group rule to allow local ssh access to eks cluster bastion host EC2

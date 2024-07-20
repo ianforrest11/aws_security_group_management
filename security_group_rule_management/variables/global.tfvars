@@ -1,4 +1,6 @@
 # Global Variables
+port_65535                 = 65535
+port_10250                 = 10250
 port_443                   = 443
 port_80                    = 80
 port_22                    = 22
