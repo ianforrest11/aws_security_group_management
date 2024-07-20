@@ -37,9 +37,9 @@
 #     description      = "Allow ssh from bastion host EC2"
 #   }  
 # ]
-prod_ec2_bastion_host_sg_name        = "prod_ec2_bastion_host_security_group"
-prod_ec2_bastion_host_sg_description = "Security group for bastion EC2 to access EKS production cluster"
-prod_ec2_bastion_host_environment    = "production"
+prod_ec2_bastion_host_sg_name           = "prod_ec2_bastion_host_security_group"
+prod_ec2_bastion_host_sg_description    = "Security group for bastion EC2 to access EKS production cluster"
+prod_ec2_bastion_host_sg_environment    = "production"
 
 ### EKS Security Group Variables ###
 # eks_egress_rules = [
